@@ -1,0 +1,12 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "claude-tui"
+version = "0.1.0"
+description = "Programmatic interface to Claude Code TUI — streams raw JSONL like claude -p"
+requires-python = ">=3.10"
+
+[project.scripts]
+claude-tui = "claude_tui.cli:main"
