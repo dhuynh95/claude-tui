@@ -13,7 +13,7 @@ import sys
 import time
 from typing import Any
 
-from claude_tui.orchestrator import ClaudeREPL
+from claude_sock.orchestrator import ClaudeREPL
 
 
 def emit(obj: dict) -> None:

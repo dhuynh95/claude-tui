@@ -3,10 +3,27 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "claude-tui"
+name = "claude-sock"
 version = "0.1.0"
-description = "Programmatic interface to Claude Code TUI — streams raw JSONL like claude -p"
+description = "Sockpuppet for Claude Code — drive the TUI programmatically, stream JSONL like claude -p"
 requires-python = ">=3.10"
+readme = "README.md"
+license = "MIT"
+authors = [
+    { name = "Daniel Huynh" },
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Operating System :: POSIX",
+    "Operating System :: MacOS",
+    "Topic :: Software Development :: Testing",
+]
+
+[project.urls]
+Homepage = "https://github.com/dhuynh95/claude-sock"
+Repository = "https://github.com/dhuynh95/claude-sock"
 
 [project.scripts]
-claude-tui = "claude_tui.cli:main"
+claude-sock = "claude_sock.cli:main"
