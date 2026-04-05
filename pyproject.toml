@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "claude-sock"
-version = "0.1.0"
+version = "0.1.1"
 description = "Sockpuppet for Claude Code — drive the TUI programmatically, stream JSONL like claude -p"
 requires-python = ">=3.10"
 readme = "README.md"
