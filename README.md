@@ -19,7 +19,7 @@ claude-sock bridges the gap: it speaks the `claude -p` protocol so tools like Op
 ### 1. Install claude-sock
 
 ```bash
-pipx install claude-sock
+pipx install claude-sock 
 ```
 
 ### 2. Install OpenClaw
@@ -109,4 +109,8 @@ Your code
 
 ## Contributing
 
-MIT
+Feel free to open PRs to make it more stable / more feature prone.
+
+## Liability
+
+This is a toy project provided as-is, with no warranty of any kind. Use it at your own risk. The author is not responsible for any consequences arising from its use, including but not limited to account restrictions, unexpected charges, or violations of Anthropic's terms of service. You are solely responsible for how you use this tool and for ensuring compliance with all applicable terms and policies.
