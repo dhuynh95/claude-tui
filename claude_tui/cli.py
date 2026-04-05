@@ -59,7 +59,7 @@ async def _run() -> None:
 
     t0 = time.monotonic()
 
-    async with ClaudeREPL(timeout=args.timeout, server_names=[]) as repl:
+    async with ClaudeREPL(timeout=args.timeout, server_names=[], resume=args.resume) as repl:
         # 1. Init line
         emit({
             "type": "system",

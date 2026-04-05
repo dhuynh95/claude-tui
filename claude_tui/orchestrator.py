@@ -240,9 +240,11 @@ class ClaudeREPL:
         workdir: Path | None = None,
         env: dict[str, str] | None = None,
         server_names: list[str] | None = None,
+        resume: str | None = None,
     ):
         self.timeout = timeout
-        self.session_id = session_id or str(uuid.uuid4())
+        self.session_id = resume or session_id or str(uuid.uuid4())
+        self._resume = resume
         self._workdir = (workdir or Path.cwd()).resolve()
         self._byte_offset = 0
 
@@ -267,10 +269,12 @@ class ClaudeREPL:
         self._master, slave = pty.openpty()
         fcntl.ioctl(slave, termios.TIOCSWINSZ, struct.pack("HHHH", 24, 80, 0, 0))
 
-        cmd = [
-            "claude",
-            "--session-id",
-            self.session_id,
+        cmd = ["claude"]
+        if self._resume:
+            cmd += ["--resume", self._resume]
+        else:
+            cmd += ["--session-id", self.session_id]
+        cmd += [
             "--dangerously-skip-permissions",
             "--mcp-config",
             self._mcp_tmp.name,
