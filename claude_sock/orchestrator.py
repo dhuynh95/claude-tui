@@ -419,9 +419,48 @@ class ClaudeREPL:
 
     # -- Lifecycle -------------------------------------------------------------
 
+    def _read_pty_output(self) -> str:
+        """Read all available PTY output as a string."""
+        chunks: list[bytes] = []
+        while True:
+            ready, _, _ = select.select([self._master], [], [], 0)
+            if not ready:
+                break
+            try:
+                data = os.read(self._master, 4096)
+                if not data:
+                    break
+                chunks.append(data)
+            except OSError:
+                break
+        return b"".join(chunks).decode("utf-8", errors="replace")
+
+    def _accept_dialog(self, output: str) -> bool:
+        """Detect and accept a TUI confirmation dialog. Returns True if handled."""
+        # Bypass permissions dialog: "Yes, I accept" is option 2 → down + enter
+        if "Yes" in output and ("Bypass" in output or "dangerous" in output.lower()):
+            os.write(self._master, KEYS["down"])
+            os.write(self._master, KEYS["enter"])
+            return True
+        # Workspace trust dialog: "Yes, I trust this folder" is option 1 → enter
+        if "trust" in output.lower() and "Yes" in output:
+            os.write(self._master, KEYS["enter"])
+            return True
+        return False
+
     async def start(self) -> None:
-        """Wait for TUI startup and activate input."""
-        await asyncio.sleep(5)
+        """Wait for TUI startup, accept any startup dialogs, and activate input."""
+        await asyncio.sleep(2)
+
+        # Handle up to 3 sequential dialogs (permissions, workspace trust, etc.)
+        for _ in range(3):
+            output = self._read_pty_output()
+            if not self._accept_dialog(output):
+                break
+            await asyncio.sleep(3)
+
+        # Wait for TUI to be fully ready
+        await asyncio.sleep(2)
         self._drain_pty()
         os.write(self._master, FOCUS_IN)
         await asyncio.sleep(0.2)
